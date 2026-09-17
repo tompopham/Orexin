@@ -166,7 +166,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     // MARK: Session
 
     private func turnOn(for duration: TimeInterval?) {
-        if let battery = Power.battery(), battery.onBattery, battery.percent < batteryFloor {
+        if !isOn, let battery = Power.battery(), battery.onBattery, battery.percent < batteryFloor {
             alert("Your battery is below \(batteryFloor)%. Plug in your Mac to keep it awake.")
             return
         }
