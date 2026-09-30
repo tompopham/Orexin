@@ -1,6 +1,7 @@
-// Awake — keeps this Mac awake from the menu bar, lid open or closed.
+// Orexin — keeps this Mac awake from the menu bar, lid open or closed. Named after the brain
+// peptide that holds you awake; losing the neurons that make it causes narcolepsy.
 //
-// Closing the lid is what sleeps a MacBook with no external display. Awake stops that with
+// Closing the lid is what sleeps a MacBook with no external display. Orexin stops that with
 // an unprivileged IOKit call — IOPMrootDomain user-client selector kPMSetClamshellSleepState
 // (12) — the same call Amphetamine's Closed-Display Mode makes. No root, no sudo, no
 // permissions file. Unlike `pmset disablesleep`, this suppresses only lid-close sleep (not
@@ -8,7 +9,7 @@
 // there is no state that can leave the Mac permanently unable to sleep.
 //
 // The catch: powerd owns the same kernel bit and recomputes it on wake, power-source change
-// and assertion churn, so Awake must re-apply it — on a timer and on those events — for as
+// and assertion churn, so Orexin must re-apply it — on a timer and on those events — for as
 // long as a session is running.
 
 import AppKit
@@ -54,7 +55,7 @@ final class SleepAssertion {
         guard !held else { return }
         held = IOPMAssertionCreateWithName("PreventUserIdleSystemSleep" as CFString,
                                            IOPMAssertionLevel(kIOPMAssertionLevelOn),
-                                           "Awake is keeping your Mac awake" as CFString, &id) == kIOReturnSuccess
+                                           "Orexin is keeping your Mac awake" as CFString, &id) == kIOReturnSuccess
     }
 
     func release() {
@@ -247,11 +248,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private func confirmFirstUse() -> Bool {
         if defaults.bool(forKey: "warningAccepted") { return true }
         let warning = NSAlert()
-        warning.messageText = "Awake keeps your Mac awake even with the lid closed"
+        warning.messageText = "Orexin keeps your Mac awake even with the lid closed"
         warning.informativeText = """
-            Don't put your Mac in a bag while Awake is on — it can overheat. \
-            Awake turns itself off if the battery drops below \(batteryFloor)% or your Mac gets too hot, \
-            and closing Awake (or restarting) lets your Mac sleep normally again.
+            Don't put your Mac in a bag while Orexin is on — it can overheat. \
+            Orexin turns itself off if the battery drops below \(batteryFloor)% or your Mac gets too hot, \
+            and closing Orexin (or restarting) lets your Mac sleep normally again.
             """
         warning.addButton(withTitle: "Keep Awake")
         warning.addButton(withTitle: "Cancel")
@@ -301,7 +302,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
         menu.addItem(MenuAction("Open at Login", checked: SMAppService.mainApp.status == .enabled) { [unowned self] in
             toggleLogin()
         })
-        menu.addItem(MenuAction("Quit Awake") { NSApp.terminate(nil) })
+        menu.addItem(MenuAction("Quit Orexin") { NSApp.terminate(nil) })
     }
 
     private var statusText: String {
@@ -313,16 +314,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
 
     private func updateStatus() {
         guard let button = statusItem?.button else { return }
-        let image = NSImage(systemSymbolName: isOn ? "pills.fill" : "pills", accessibilityDescription: "Awake")
+        let image = NSImage(systemSymbolName: isOn ? "pills.fill" : "pills", accessibilityDescription: "Orexin")
         image?.isTemplate = true
         button.image = image
         button.appearsDisabled = !isOn
-        button.toolTip = "Awake: \(statusText)"
+        button.toolTip = "Orexin: \(statusText)"
     }
 
     private func alert(_ message: String) {
         let alert = NSAlert()
-        alert.messageText = "Awake"
+        alert.messageText = "Orexin"
         alert.informativeText = message
         NSApp.activate()
         alert.runModal()
