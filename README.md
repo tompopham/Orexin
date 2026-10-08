@@ -15,11 +15,12 @@ macOS 14 Sonoma or later, on an Apple silicon Mac. `build.sh` builds for arm64 o
     ./build.sh --install  # builds, replaces /Applications/Orexin.app, opens it
 
 ## First launch
-On its first launch Orexin turns on Open at Login by itself. It does this once only: untick
-Open at Login in its menu and it stays off.
+On its first launch Orexin tries once to turn on Open at Login; check the tick in its menu.
+Untick it there and it stays off.
 
 The first time you pick a duration, it warns that it keeps the Mac awake with the lid closed
-and that the Mac can overheat in a bag. Click Keep Awake to go on. It asks only once.
+and that the Mac can overheat in a bag. Click Keep Awake to go on; after that it does not ask again. Cancel leaves Orexin off, and it
+asks the next time.
 
 ## Use
 Orexin sits in the menu bar as a pill icon, filled while it is on. Click it and pick how long
